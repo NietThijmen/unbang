@@ -2,7 +2,10 @@ import type Bang from "./bang.d";
 import {bangs} from "./bang";
 
 function doRegex(input: string) {
-    const bangRegex = /!(\w+)\s+(.*)/
+    // allow a bang with no following query, e.g. "!g" or "!g some search"
+    // - ^!(\w+)    : starts with '!' followed by the shortcut
+    // - (?:\s+(.*))?: optional whitespace and the rest of the query
+    const bangRegex = /^!(\w+)(?:\s+(.*))?/
     const match = input.match(bangRegex)
     if (!match) {
         console.info("No bang found in input")
@@ -12,7 +15,9 @@ function doRegex(input: string) {
         };
     }
     const bangShortcut = match[1]
-    const query = match[2]
+    // if there's no query part (user typed just "!g"), match[2] will be undefined
+    // normalize it to empty string so callers can treat missing query the same as an empty query
+    const query = match[2] ?? ''
     console.info(`Found bang shortcut: ${bangShortcut}, query: ${query}`)
 
     return {
@@ -47,20 +52,32 @@ function handleRedirect() {
 
     if(!bangShortcut) {
         console.info("No bang shortcut found in query, skipping redirect")
-        window.location.href = query; // redirect to the query itself if no bang is found
+        window.location.replace(query);
+        return null;
     }
 
 
-    const bang = findBang(bangShortcut as string)
+    let bang = findBang(bangShortcut as string)
     if (!bang) {
         console.info("No bang found in query, skipping redirect")
-        window.location.href = query; // redirect to the query itself if no bang is found
+        window.location.replace(query);
+        return null;
     }
 
-    // redirect to the bang's URL with the query parameter replaced with the query
-    // @ts-ignore
-    const redirectUrl = bang.u.replace('{{{s}}}', encodeURIComponent(queryWithoutBang))
-    window.location.href = redirectUrl;
+    // bang is now always not null, so we can safely use it (This is such a hack, but it works)
+    bang = bang as Bang;
+
+
+
+
+    let redirectUrl: string;
+    if(!queryWithoutBang) {
+        redirectUrl = `https://${bang.d}`;
+    } else {
+        redirectUrl = bang.u.replace('{{{s}}}', encodeURIComponent(queryWithoutBang))
+    }
+
+    window.location.replace(redirectUrl);
     return redirectUrl;
 }
 
