@@ -48,20 +48,16 @@ function handleRedirect() {
         return null;
     }
 
-    const {bangShortcut, queryWithoutBang} = doRegex(query)
+    let {bangShortcut, queryWithoutBang} = doRegex(query)
 
     if(!bangShortcut) {
-        console.info("No bang shortcut found in query, skipping redirect")
-        window.location.replace(query);
-        return null;
+        bangShortcut = 'g'; // default to Google if no bang found
     }
 
 
     let bang = findBang(bangShortcut as string)
     if (!bang) {
-        console.info("No bang found in query, skipping redirect")
-        window.location.replace(query);
-        return null;
+        bang = bangs.find(b => b.t === 'g') as Bang; // default to Google if no bang found
     }
 
     // bang is now always not null, so we can safely use it (This is such a hack, but it works)
