@@ -7,6 +7,14 @@
     onMount(() => {
         injectAnalytics({
             mode: isProd ? 'production' : 'development',
+            beforeSend: event => {
+                const url = new URL(event.url);
+                url.searchParams.delete('q');
+                event.url = url.toString();
+
+
+                return event;
+            }
 
         })
     });
