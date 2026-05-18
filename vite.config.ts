@@ -10,7 +10,7 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['opensearch.xml'],
+      includeAssets: ['opensearch.xml', 'favicon.svg', 'robots.txt'],
     }),
   ],
 })
