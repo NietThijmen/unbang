@@ -22,7 +22,7 @@
 
   const matchesQuery = (bang: Bang, normalizedQuery: string) => {
     if (!normalizedQuery) return true
-    return [bang.t, bang.s, bang.sc, bang.c, bang.d]
+    return [`!${bang.t}`, bang.t, bang.s, bang.sc, bang.c, bang.d]
       .filter(Boolean)
       .some((value) => value.toLowerCase().includes(normalizedQuery))
   }
@@ -33,11 +33,22 @@
   }
   function filterBangs() {
     const normalizedQuery = query.trim().toLowerCase()
-    return bangs.filter(
+
+    let filtered = bangs.filter(
       (bang) =>
         (selectedCategory === 'All' || bang.c === selectedCategory) &&
         matchesQuery(bang, normalizedQuery)
     )
+
+    // order by relevance (r), then alphabetically by shortcut (t)
+    filtered.sort((a, b) => {
+      if (a.r !== b.r) {
+        return b.r - a.r // higher relevance first
+      }
+      return a.t.localeCompare(b.t) // then alphabetically by shortcut
+    });
+
+    return filtered
   }
 
   function getVisibleBangs() {
@@ -69,10 +80,9 @@
 <main class="bang-search">
   <header class="bang-header">
     <div>
-      <h1>Bang Explorer</h1>
+      <h1>Unbang</h1>
       <p>
-        Search DuckDuckGo bangs by shortcut, title, category, or domain. Start typing to filter
-        instantly.
+        A fast, client-side search of DuckDuckGo's <a href="https://duckduckgo.com/bang.html" target="_blank">bang shortcuts.</a>
       </p>
     </div>
     <div class="stats">
