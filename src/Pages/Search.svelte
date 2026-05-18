@@ -5,6 +5,7 @@
 
     import {onMount} from "svelte";
     import {handleRedirect} from "../lib/navigate";
+    import DefaultBang from "../lib/defaultBang";
 
     const categorySet = new Set(bangs.map((bang) => bang.c))
     const categories = ['All', ...Array.from(categorySet).sort()]
@@ -12,6 +13,18 @@
 
     let query = $state('')
     let selectedCategory = $state('All')
+
+    let defaultBang = $state('g');
+
+    onMount(() => {
+      defaultBang = DefaultBang.getDefaultBang();
+    })
+
+
+    function setDefaultBang(shortcut: string) {
+      DefaultBang.setDefaultBang(shortcut);
+      defaultBang = shortcut;
+    }
 
 
 
@@ -22,10 +35,6 @@
             .some((value) => value.toLowerCase().includes(normalizedQuery))
     }
 
-
-    function normaliseQuery() {
-        return query.trim().toLowerCase()
-    }
     function filterBangs() {
         const normalizedQuery = query.trim().toLowerCase()
 
@@ -42,6 +51,16 @@
             }
             return a.t.localeCompare(b.t) // then alphabetically by shortcut
         });
+
+
+        // set default bang to the top if it matches the query and category
+        if (defaultBang) {
+            filtered.sort((a, b) => {
+                if (a.t === defaultBang) return -1
+                if (b.t === defaultBang) return 1
+                return 0
+            });
+        }
 
         return filtered
     }
@@ -144,9 +163,42 @@
               <span>r:{bang.r}</span>
             </div>
             <div class="bang-url">{bang.u}</div>
+
+            <div class="bang-actions">
+              <a href={bang.u.replace('{{{s}}}', 'example')} class="use-it" target="_blank" rel="noopener noreferrer">Try it</a>
+              <button on:click={() => setDefaultBang(bang.t)} class="set-default">
+                {defaultBang === bang.t ? 'Default search-engine' : 'Set as default'}
+              </button>
+            </div>
           </li>
         {/each}
       </ul>
     {/if}
   </section>
 </main>
+
+<style>
+  .bang-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .bang-actions .use-it {
+    padding: 5px 10px;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+
+  .bang-actions .set-default {
+    padding: 5px 10px;
+    background-color: #eee;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
