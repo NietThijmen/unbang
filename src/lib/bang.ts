@@ -1,5 +1,6 @@
 // This file is copied from `https://duckduckgo.com/bang.js` at `18 may 2026`
-[
+import type Bang from "./bangs.d";
+export const bangs: Bang[] = [
   {
     c: "Tech",
     d: "www.01net.com",
