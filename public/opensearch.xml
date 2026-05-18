@@ -1,0 +1,13 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>Unbang</ShortName>
+    <Description>
+        A better search-engine with !bang support
+    </Description>
+    <Image width="16" height="16" type="image/svg+xml">
+        /favicon.svg
+    </Image>
+    <Url type="text/html" method="GET" template="https://unbang.vercel.app/?q={searchTerms}"/>
+    <Query role="example" searchTerms="!g cats"/>
+    <InputEncoding>UTF-8</InputEncoding>
+    <OutputEncoding>UTF-8</OutputEncoding>
+</OpenSearchDescription>
