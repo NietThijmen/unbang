@@ -31,8 +31,24 @@
     let defaultBang = $state('g');
 
     onMount(() => {
+      const url = new URL(window.location.href);
       defaultBang = DefaultBang.getDefaultBang();
+
+      if(url.searchParams.get('query')) {
+        query = url.searchParams.get('query') as string;
+      }
+
+      if(url.searchParams.get('category')) {
+        selectedCategory = url.searchParams.get('category') as string;
+      }
     })
+
+    $effect(() => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('query', query);
+      url.searchParams.set('category', selectedCategory);
+      window.history.replaceState({}, '', url.toString());
+    });
 
 
     function setDefaultBang(shortcut: string) {
