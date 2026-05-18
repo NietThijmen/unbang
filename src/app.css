@@ -382,18 +382,18 @@ code {
   outline-offset: 2px;
 }
 
-.type-summary {
+.usage-instructions {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
   background: var(--accent-bg);
 }
 
-.type-summary h2 {
+.usage-instructions h2 {
   margin-bottom: 12px;
 }
 
-.type-summary ul {
+.usage-instructions ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -402,20 +402,20 @@ code {
   gap: 12px;
 }
 
-.type-summary li {
+.usage-instructions li {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px 14px;
 }
 
-.type-summary li p {
+.usage-instructions li p {
   margin-top: 6px;
   font-size: 14px;
   color: var(--text);
 }
 
-.type-summary code {
+.usage-instructions code {
   margin-right: 6px;
 }
 

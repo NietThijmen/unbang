@@ -10,15 +10,6 @@
   const categorySet = new Set(bangs.map((bang) => bang.c))
   const categories = ['All', ...Array.from(categorySet).sort()]
 
-  const typeSummary = [
-    { key: 't', label: 'Shortcut', description: 'Bang trigger (e.g. "!w")' },
-    { key: 's', label: 'Title', description: 'Site or service name' },
-    { key: 'sc', label: 'Alt title', description: 'Secondary name or subtype' },
-    { key: 'c', label: 'Category', description: 'High-level group' },
-    { key: 'd', label: 'Domain', description: 'Primary host' },
-    { key: 'r', label: 'Relevance', description: 'DuckDuckGo ranking weight' },
-    { key: 'u', label: 'URL', description: 'Search URL template' }
-  ]
 
   onMount(() => {
     handleRedirect();
@@ -65,6 +56,11 @@
   let visibleBangs: Bang[] = $derived(getVisibleBangs())
 
 
+  const hostname = window.location.hostname
+  const isHttps = window.location.protocol === 'https:'
+  const urlPrefix = isHttps ? 'https://' : 'http://'
+
+  const fullUrl = `${urlPrefix}${hostname}/?q=%s`
 
 </script>
 
@@ -110,19 +106,13 @@
     </label>
   </section>
 
-  <section class="type-summary">
-    <h2>Bang fields</h2>
-    <ul>
-      {#each typeSummary as field}
-        <li>
-          <div>
-            <code>{field.key}</code>
-            <strong>{field.label}</strong>
-          </div>
-          <p>{field.description}</p>
-        </li>
-      {/each}
-    </ul>
+  <section class="usage-instructions">
+    <h2>Usage</h2>
+    <p>DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
+
+    <pre class="code-snippet">{fullUrl}</pre>
+
+
   </section>
 
   <section>
