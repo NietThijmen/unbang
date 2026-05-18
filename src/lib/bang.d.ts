@@ -6,4 +6,6 @@ export default interface Bang {
     sc: string // Alternate title
     t: string // Shortcut
     u: string // search URL
+
+    isCustom?: boolean // whether this is a custom bang or not
 }

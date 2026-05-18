@@ -1,6 +1,6 @@
 import type Bang from "./bang.d";
-import {bangs} from "./bang";
-import DefaultBang from "./defaultBang";
+import DefaultBang from "./stores/defaultBang";
+import Bangs from "./stores/bangs";
 
 function doRegex(input: string) {
     // allow a bang with no following query, e.g. "!g" or "!g some search"
@@ -31,7 +31,7 @@ function findBang(bangShortcut: string): Bang|null {
 
 
     // find the bang in the list of bangs
-    const bang = bangs.find(b => b.t === bangShortcut)
+    const bang = Bangs.getBangs().find(b => b.t === bangShortcut)
     if (!bang) {
         return null;
     }
@@ -58,7 +58,7 @@ function handleRedirect() {
 
     let bang = findBang(bangShortcut as string)
     if (!bang) {
-        bang = bangs.find(b => b.t === DefaultBang.getDefaultBang()) as Bang; // default to Google if no bang found
+        bang = Bangs.getBangs().find(b => b.t === DefaultBang.getDefaultBang()) as Bang; // default to Google if no bang found
     }
 
     // bang is now always not null, so we can safely use it (This is such a hack, but it works)

@@ -21,6 +21,7 @@
     "workbox-window": "^7.4.1"
   },
   "dependencies": {
-    "@lucide/svelte": "^1.16.0"
+    "@lucide/svelte": "^1.16.0",
+    "svelte-sonner": "^1.1.1"
   }
 }

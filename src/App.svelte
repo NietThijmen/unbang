@@ -1,6 +1,7 @@
 <script lang="ts">
     import {handleRedirect} from "./lib/navigate";
     import ReloadPrompt from './lib/ReloadPrompt.svelte'
+    import { Toaster } from "svelte-sonner";
 
     import Redirecting from './Pages/redirecting.svelte';
     import Search from "./Pages/Search.svelte";
@@ -29,3 +30,5 @@
 {:else}
     <Search/>
 {/if}
+
+<Toaster/>
