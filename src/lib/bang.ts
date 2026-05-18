@@ -65276,7 +65276,7 @@ export const bangs: Bang[] = [
   },
   {
     c: "Online Services",
-    d: "google.com",
+    d: "google.com/maps",
     r: 32572,
     s: "Google Maps",
     sc: "Maps",
