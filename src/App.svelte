@@ -3,6 +3,7 @@
   import type Bang from './lib/bang.d'
 
   import {handleRedirect} from "./lib/navigate";
+  import ReloadPrompt from './lib/ReloadPrompt.svelte'
 
   import {onMount} from "svelte";
 
@@ -66,6 +67,8 @@
 
 
 </script>
+
+<ReloadPrompt />
 
 <main class="bang-search">
   <header class="bang-header">
