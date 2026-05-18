@@ -6,6 +6,7 @@
     import {onMount} from "svelte";
     import {handleRedirect} from "../lib/navigate";
     import DefaultBang from "../lib/defaultBang";
+    import Credits from "../lib/Credits.svelte";
 
     const categorySet = new Set(bangs.map((bang) => bang.c))
     const categories = ['All', ...Array.from(categorySet).sort()]
@@ -87,6 +88,8 @@
 
 </script>
 <main class="bang-search">
+  <Credits/>
+
   <header class="bang-header">
     <div>
       <h1>Unbang</h1>
