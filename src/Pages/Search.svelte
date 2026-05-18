@@ -67,7 +67,7 @@
 
     function getVisibleBangs() {
         const normalizedQuery = query.trim().toLowerCase()
-        const filtered = bangs.filter(
+        const filtered = filteredBangs.filter(
             (bang) =>
                 (selectedCategory === 'All' || bang.c === selectedCategory) &&
                 matchesQuery(bang, normalizedQuery)
