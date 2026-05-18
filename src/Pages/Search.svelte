@@ -8,6 +8,7 @@
     import Bangs from "../lib/stores/bangs";
     import CreateBang from "../lib/CreateBang.svelte";
     import CustomBangs from "../lib/stores/customBangs";
+    import {toast} from "svelte-sonner";
 
 
     let bangs = $state(Bangs.getBangs())
@@ -25,7 +26,7 @@
 
 
     let query = $state('')
-    let selectedCategory = $state('Custom')
+    let selectedCategory = $state('All')
 
     let defaultBang = $state('g');
 
@@ -37,6 +38,18 @@
     function setDefaultBang(shortcut: string) {
       DefaultBang.setDefaultBang(shortcut);
       defaultBang = shortcut;
+    }
+
+    function removeCustomBang(shortcut: string) {
+
+      if(defaultBang === shortcut) {
+        DefaultBang.setDefaultBang('g'); // reset to google if default bang is removed
+        defaultBang = 'g';
+        toast.info("Default bang reset to !g since the previous default was removed.");
+      }
+
+      CustomBangs.removeCustomBang(shortcut);
+      updateBangs();
     }
 
 
@@ -54,33 +67,33 @@
         let filtered = [...bangs];
 
         if(selectedCategory === 'Custom') {
-          filtered = bangs.filter(bang => bang.isCustom === true);
+          filtered = filtered.filter(bang => bang.isCustom === true);
         } else if (selectedCategory !== 'All') {
-          filtered = bangs.filter(bang => bang.c === selectedCategory);
+          filtered = filtered.filter(bang => bang.c === selectedCategory);
         }
 
 
 
-        // filtered.filter(bang => matchesQuery(bang, normalizedQuery))
-        //
-        //
-        // // order by relevance (r), then alphabetically by shortcut (t)
-        // filtered.sort((a, b) => {
-        //     if (a.r !== b.r) {
-        //         return b.r - a.r // higher relevance first
-        //     }
-        //     return a.t.localeCompare(b.t) // then alphabetically by shortcut
-        // });
-        //
-        //
-        // // set default bang to the top if it matches the query and category
-        // if (defaultBang) {
-        //     filtered.sort((a, b) => {
-        //         if (a.t === defaultBang) return -1
-        //         if (b.t === defaultBang) return 1
-        //         return 0
-        //     });
-        // }
+        filtered = filtered.filter(bang => matchesQuery(bang, normalizedQuery))
+
+
+        // order by relevance (r), then alphabetically by shortcut (t)
+        filtered.sort((a, b) => {
+            if (a.r !== b.r) {
+                return b.r - a.r // higher relevance first
+            }
+            return a.t.localeCompare(b.t) // then alphabetically by shortcut
+        });
+
+
+        // set default bang to the top if it matches the query and category
+        if (defaultBang) {
+            filtered.sort((a, b) => {
+                if (a.t === defaultBang) return -1
+                if (b.t === defaultBang) return 1
+                return 0
+            });
+        }
 
         return filtered
     }
@@ -204,8 +217,7 @@
 
               {#if isCustom}
                 <button onclick={() => {
-                    CustomBangs.removeCustomBang(bang.t);
-                    updateBangs();
+                    removeCustomBang(bang.t);
                   }} class="remove-button">Remove</button>
               {/if}
               </div>
