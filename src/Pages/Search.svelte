@@ -194,7 +194,7 @@
       <ul class="bang-grid">
         {#each visibleBangs as bang (bang.t + bang.d)}
 
-          {@const isCustom = bang.isCustom ? true : false}
+          {@const isCustom = bang.isCustom}
 
           <li class="bang-card">
             <div class="bang-title">
@@ -264,12 +264,4 @@
     cursor: pointer;
   }
 
-  .custom-badge {
-    background-color: #ff9800;
-    color: white;
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 10px;
-  }
 </style>

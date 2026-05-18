@@ -34,7 +34,10 @@
         return true;
     }
 
-    function createBang() {
+    function createBang(
+        event: SubmitEvent
+    ) {
+        event.preventDefault();
 
         if(!validateSearchUrl()) {
             toast.error('URL must include {{{s}}} as a placeholder for the search query');
@@ -75,7 +78,7 @@
 
 <div class="modal" class:open={isOpen}>
     <div class="modal-content">
-        <form on:submit|preventDefault={createBang}>
+        <form onsubmit={createBang}>
             <div class="fields">
                 <div class="field">
                     <label for="category">Category</label>
@@ -114,7 +117,7 @@
 
                 <div class="field buttons">
                     <button type="submit">Create</button>
-                    <button type="button" on:click={close}>Cancel</button>
+                    <button type="button" onclick={close}>Cancel</button>
                 </div>
 
 
