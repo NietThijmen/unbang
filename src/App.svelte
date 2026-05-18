@@ -5,6 +5,7 @@
 
     import Redirecting from './Pages/redirecting.svelte';
     import Search from "./Pages/Search.svelte";
+    import Analytics from "./lib/Analytics.svelte";
 
     const hasQueryParam = new URLSearchParams(window.location.search).has('q')
 
@@ -31,4 +32,5 @@
     <Search/>
 {/if}
 
+<Analytics/>
 <Toaster/>
