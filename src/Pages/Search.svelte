@@ -8,7 +8,9 @@
     import Bangs from "../lib/stores/bangs";
     import CreateBang from "../lib/CreateBang.svelte";
     import CustomBangs from "../lib/stores/customBangs";
-    import {toast} from "svelte-sonner";
+    import {toast, Toaster} from "svelte-sonner";
+    import Analytics from "../lib/Analytics.svelte";
+    import ReloadPrompt from "../lib/ReloadPrompt.svelte";
 
 
     let bangs = $state(Bangs.getBangs())
@@ -245,6 +247,10 @@
 </main>
 
 <CreateBang bind:isOpen={isCreationOpen} bind:updateBangs={updateBangs}/>
+<Analytics/>
+<Toaster/>
+<ReloadPrompt/>
+
 
 <style>
   .bang-actions {

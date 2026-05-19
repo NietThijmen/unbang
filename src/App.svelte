@@ -1,21 +1,7 @@
 <script lang="ts">
-    import {handleRedirect} from "./lib/navigate";
-    import ReloadPrompt from './lib/ReloadPrompt.svelte'
-    import { Toaster } from "svelte-sonner";
-
-    import Redirecting from './Pages/redirecting.svelte';
     import Search from "./Pages/Search.svelte";
-    import Analytics from "./lib/Analytics.svelte";
-
-    const hasQueryParam = new URLSearchParams(window.location.search).has('q')
-
-    $effect.pre(() => {
-        handleRedirect();
-    })
-
 </script>
 
-<ReloadPrompt/>
 
 <svelte:head>
     <title>Unbang</title>
@@ -26,11 +12,6 @@
     <link rel="search" type="application/opensearchdescription+xml" title="UnBang" href="/opensearch.xml"/>
 </svelte:head>
 
-{#if hasQueryParam}
-    <Redirecting/>
-{:else}
-    <Search/>
-{/if}
+<Search/>
 
-<Analytics/>
-<Toaster/>
+
